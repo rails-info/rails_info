@@ -1,0 +1,16 @@
+<div class="tabs">
+  <ul>
+    <li><a href="#stack_trace">Stack trace</a></li>
+    <li><a href="#request">Request</a></li>
+    <li><a href="#response">Response</a></li>
+  </ul>
+  <div id="stack_trace">
+    <%= render 'rails_info/stack_traces/accordion' %>
+  </div>
+  <div id="request">
+    <%= raw @stack_trace.request_tab %>
+  </div>
+  <div id="response">
+    <%= raw @stack_trace.response_tab %>
+  </div>
+</div>

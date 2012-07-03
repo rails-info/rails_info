@@ -1,0 +1,10 @@
+<%= form_tag rails_info_rspec_log_path, method: 'put' do %>
+  <p>
+  <%= check_box_tag 'debug' %> debug? &nbsp;&nbsp;  
+  <%= label_tag 'log[rails_root]', raw('<strong>Rails root:</strong>') %> 
+  <%= text_field_tag 'log[rails_root]', (params['log']['rails_root'] rescue "#{Rails.root}/"), size: 50 %> &nbsp;&nbsp;  
+  <%= submit_tag 'submit' %>
+  </p>
+<% end %>
+<%= raw @rails_info_log.summary %>
+<%= raw @rails_info_log.accordion %>

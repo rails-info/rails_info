@@ -1,0 +1,16 @@
+<div style="max-height:400px; width:100%; overflow: auto">
+  <table>
+    <thead>
+      <th><%= raw sub_content['columns'].uniq.join('</th><th>') %></th>
+    </thead>
+    <tbody>
+      <% sub_content['rows'].each do |row| %>
+      <tr>
+        <% sub_content['columns'].uniq.each do |column| %>
+        <td><%= row[column] if row[column] %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

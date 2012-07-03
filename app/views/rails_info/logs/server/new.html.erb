@@ -1,0 +1,19 @@
+<style type="text/css">
+.ui-widget {
+    font-size: xx-small;
+}
+</style>
+<% form_tag rails_info_server_log_path do %>
+  <%= check_box_tag 'debug' %> debug? 
+  <p>
+    <%= text_field_tag 'log[rails_root]', (params['log']['rails_root'] rescue "#{Rails.root}/log/") %>
+  </p>
+  <p>
+    <%= text_area_tag 'log[body]', (params['log']['body'] rescue nil) %>
+  </p>
+  <p>
+    <%= submit_tag 'submit' %>
+  </p>
+<% end %>
+<%= raw @rails_info_log.accordion %>
+<%= raw @rails_info_log.write_tabs %>

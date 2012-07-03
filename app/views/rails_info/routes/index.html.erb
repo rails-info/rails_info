@@ -1,0 +1,18 @@
+<table class="table table-striped">
+  <thead>
+    <th>Verb</th>
+    <th>Path</th>
+    <th>Name</th>
+    <th>Requirements</th>
+  </thead>
+  <tbody>
+    <% request.env['action_dispatch.routes'].routes.each do |route| %>
+      <tr>
+        <td><%= route.verb.source.gsub(/[$^]/, '') %></td>
+        <td><%= route.path.respond_to?('spec') ? route.path.spec.to_s : route.path %></td>
+        <td><%= route.name %></td>
+        <td><%= route.requirements.inspect %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

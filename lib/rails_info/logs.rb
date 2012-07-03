@@ -1,0 +1,2 @@
+module RailsInfo::Logs
+end

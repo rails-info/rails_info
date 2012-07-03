@@ -1,0 +1,2 @@
+module RailsInfo::Controller
+end

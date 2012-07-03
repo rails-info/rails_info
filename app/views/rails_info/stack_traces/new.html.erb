@@ -1,0 +1,10 @@
+<%= render 'rails_info/stack_traces/form' unless @stack_trace %>
+<% if @stack_trace %>
+  <%= raw @stack_trace.header %>
+
+  <% if @stack_trace.request && @stack_trace.response %>
+    <%= render 'rails_info/stack_traces/with_request_and_response' %>
+  <% else %>
+    <%= render 'rails_info/stack_traces/accordion' %>
+  <% end %>  
+<% end %>

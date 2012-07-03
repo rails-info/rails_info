@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rails Info</title>
+  <%= stylesheet_link_tag controller.send(:_layout) == 'rails_info' ? 'rails_info/application' : controller.send(:_layout), media: 'all' %>
+  <%= javascript_include_tag 'rails_info/application' %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <%= render 'layouts/shared/navigation' %>
+  <div class='container-fluid'>
+    <div class="row-fluid">
+      <div class="span12">  
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

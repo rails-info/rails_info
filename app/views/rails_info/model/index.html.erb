@@ -1,0 +1,14 @@
+<div class="tabs">
+  <ul>
+    <li><a href="#model_hash_tree">Tree</a></li>
+    <li><a href="#creately">Create.ly</a></li>
+  </ul>
+  <div id="model_hash_tree">
+    <p><%= @rails_info_model.count %> models.</p>
+    <%= @rails_info_model.hash_tree %>
+  </div>
+  <div id="creately">
+    <p><%= @rails_info_model.count %> models.</p>
+    <%= @rails_info_model.creately %>
+  </div>
+</div>

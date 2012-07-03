@@ -1,0 +1,58 @@
+= RailsInfo
+
+Wiki[https://github.com/applicat/rails_info/wiki] 
+
+Experimental engine for a rails application besides admin and continous integration web interface which extends standard /rails/info (properties through public.html iframe and on Rails 3 Edge / Rails 4 also the routes action) about some extra information resources in development environment.
+
+It should be the place for other rake commands besides "rake routes" such as brakeman or best practices.
+
+Prepare for sporadic Ruby segmentation faults caused by the Python powered syntax highlighter pygments in the early stages of this project (at least under Ruby 1.9.3 & Rails 3.2.6 on MacOS). 
+There will be a configuration option for deactivating syntax highlighting soon for the time being without a solution for this problem.
+
+Tested on MacOS with: Rails 3.1 & Ruby 1.9.2, Rails 3.2.6 & Ruby 1.9.3.
+
+== Installation
+
+In <b>Rails 3</b>, add this under your development group to the Gemfile of your Rails 3 application and run the +bundle+ command.
+
+  gem "rails_info"
+
+== Getting Started
+
+=== 1) Request the Web interface
+
+Just start your Rails 3 application server and request the following page in your browser.
+
+  http://localhost:3001/rails/info
+
+=== 2) Custom Exception Stack Trace View
+
+Add the following line at the top of your ApplicationController to replace the standard stack trace view by a customized version which displays the code snippet for each file of the stack trace inline:
+
+  include RailsInfo::Controller::ExceptionDiagnostics
+
+Consider those sporadic Ruby segmentation faults mentioned above when you include this line ;-)
+
+=== 3) RSpec Log
+
+Write the result of an rspec command to log/rspec.log
+
+  bundle exec rspec spec/whatever_you_want > log/rspec.log
+
+Run your rails development server if not already started and request the following page:
+
+  http://localhost:3000/rails/info/logs/test/rspec
+
+== Wiki Docs
+
+* TODO
+
+== Contribution
+
+Just follow the screencast of Ryan Bates on railscasts.com: 
+
+  http://railscasts.com/episodes/300-contributing-to-open-source
+
+== License 
+
+This project uses MIT-LICENSE.
