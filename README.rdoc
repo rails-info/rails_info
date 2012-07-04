@@ -33,6 +33,8 @@ Just follow the screencast of Ryan Bates on railscasts.com:
 
   http://railscasts.com/episodes/300-contributing-to-open-source
 
+Add a description about your changes to CHANGELOG.md under section rails_info (unreleased).
+
 == License 
 
 This project uses MIT-LICENSE.
