@@ -6,7 +6,7 @@ PATH
       jquery-rails
       jquery-ui-rails
       pygments.rb
-      rails (~> 3.2.6)
+      rails (>= 3.0)
       simple-navigation-bootstrap
       twitter-bootstrap-rails
       uglifier
