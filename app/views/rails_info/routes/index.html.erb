@@ -8,8 +8,8 @@
   <tbody>
     <% request.env['action_dispatch.routes'].routes.each do |route| %>
       <tr>
-        <td><%= route.verb.source.gsub(/[$^]/, '') %></td>
-        <td><%= route.path.respond_to?('spec') ? route.path.spec.to_s : route.path %></td>
+        <td><%= (route.verb.respond_to?(:source) ? route.verb.source : route.verb).gsub(/[$^]/, '') %></td>
+        <td><%= route.path.respond_to?(:source) ? route.path.spec.to_s : route.path %></td>
         <td><%= route.name %></td>
         <td><%= route.requirements.inspect %></td>
       </tr>
