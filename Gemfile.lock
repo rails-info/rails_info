@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails_info (0.0.1)
+    rails_info (0.0.2)
       coffee-script
       jquery-rails
       jquery-ui-rails
