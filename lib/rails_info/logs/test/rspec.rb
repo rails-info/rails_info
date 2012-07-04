@@ -65,14 +65,6 @@ class RailsInfo::Logs::Test::Rspec
         end
         
         after_stack_trace_entry, stack_trace = nil, []
-         
-        # 1) Community::CronJobs::Statistics.total_feedbacks_one_hour_ago principally works
-        
-=begin
-        line = line.split(')').second.strip.split(' ')
-        line.shift
-        example = line.join(' ') # principally works
-=end
 
         example = line.split(')').second.strip
 
