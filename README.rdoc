@@ -11,7 +11,7 @@ There will be a configuration option for deactivating syntax highlighting soon f
 
 Tested on MacOS with: Rails 3.1 & Ruby 1.9.2, Rails 3.2.6 & Ruby 1.9.3.
 
-<img src="http://img207.imageshack.us/img207/8505/railsinfonavigation001.png"/>
+http://img207.imageshack.us/img207/8505/railsinfonavigation001.png
 
 == Installation
 
