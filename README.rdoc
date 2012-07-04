@@ -11,41 +11,21 @@ There will be a configuration option for deactivating syntax highlighting soon f
 
 Tested on MacOS with: Rails 3.1 & Ruby 1.9.2, Rails 3.2.6 & Ruby 1.9.3.
 
+<img src="http://img207.imageshack.us/img207/8505/railsinfonavigation001.png"/>
+
 == Installation
 
 In <b>Rails 3</b>, add this under your development group to the Gemfile of your Rails 3 application and run the +bundle+ command.
 
   gem "rails_info"
+  
+OPTIONAL: users of catch-all-routes like match '*not_found' => 'errors#404' have to add the following line before this catch-all-route:
 
-== Getting Started
-
-=== 1) Request the Web interface
-
-Just start your Rails 3 application server and request the following page in your browser.
-
-  http://localhost:3001/rails/info
-
-=== 2) Custom Exception Stack Trace View
-
-Add the following line at the top of your ApplicationController to replace the standard stack trace view by a customized version which displays the code snippet for each file of the stack trace inline:
-
-  include RailsInfo::Controller::ExceptionDiagnostics
-
-Consider those sporadic Ruby segmentation faults mentioned above when you include this line ;-)
-
-=== 3) RSpec Log
-
-Write the result of an rspec command to log/rspec.log
-
-  bundle exec rspec spec/whatever_you_want > log/rspec.log
-
-Run your rails development server if not already started and request the following page:
-
-  http://localhost:3000/rails/info/logs/test/rspec
+  mount_rails_info if Rails.env.development?
 
 == Wiki Docs
 
-* TODO
+* {Modules}[https://github.com/Applicat/rails_info/wiki/modules]
 
 == Contribution
 
