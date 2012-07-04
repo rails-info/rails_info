@@ -2,9 +2,11 @@
 require 'jquery-rails'
 require 'jquery-ui-rails'
 require 'pygments'
+require 'twitter-bootstrap-rails'
 require 'simple-navigation-bootstrap'
 
 require 'rails_info/engine'
+require 'rails_info/routing'
 require 'rails_info/controller'
 require 'rails_info/controller/exception_diagnostics'
 require 'rails_info/model'
