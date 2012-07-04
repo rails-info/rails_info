@@ -9,14 +9,14 @@ Gem::Specification.new do |s|
   s.version     = RailsInfo::VERSION
   s.authors     = ['Mathias Gawlista']
   s.email       = ['gawlista@googlemail.com']
-  s.homepage    = 'http://Murd.ch'
+  s.homepage    = 'http://applicat.github.com/rails_info'
   s.summary     = 'Engine for a rails application which extends /rails/info about some information resources in development environment.'
   s.description = 'Engine for a rails application which extends /rails/info about some information resources in development environment.'
 
   s.files = Dir['{app,config,db,lib}/**/*'] + ['MIT-LICENSE', 'Rakefile', 'README.rdoc']
   s.test_files = Dir['spec/**/*']
 
-  s.add_dependency 'rails', '~> 3.2.6'
+  s.add_dependency 'rails', '>= 3.0'
   
   # assets
   s.add_dependency 'coffee-script'
