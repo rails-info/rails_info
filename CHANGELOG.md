@@ -1,5 +1,9 @@
 ## rails_info (unreleased) ##
 
+*   Wraps routes table by an jquery accordion presenter grouped by the first namespace part of the route path.
+
+    *Mathias Gawlista*
+
 *   Handles an unexpected case about method expectations failures at rspec log parser.
 
    *Mathias Gawlista* 
