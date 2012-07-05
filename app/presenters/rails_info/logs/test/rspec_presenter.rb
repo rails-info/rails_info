@@ -8,7 +8,10 @@ class RailsInfo::Logs::Test::RspecPresenter < ::RailsInfo::Presenter
   end
   
   def summary
-    content_tag :p, "#{@rails_info_log.hash.keys.length} files, #{@rails_info_log.summary}"
+    text = ["#{@rails_info_log.hash.keys.length} files"]
+    text << @rails_info_log.summary unless @rails_info_log.summary.blank?
+    
+    content_tag :p, text.join(', ')
   end
   
   def accordion
