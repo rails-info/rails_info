@@ -29,5 +29,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'twitter-bootstrap-rails'
   s.add_dependency 'simple-navigation-bootstrap'
   
+  s.add_development_dependency("awesome_print")
+  s.add_development_dependency("rspec-rails")
+  
   s.add_development_dependency 'mysql2'
 end
