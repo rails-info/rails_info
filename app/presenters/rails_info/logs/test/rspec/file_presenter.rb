@@ -60,6 +60,8 @@ class RailsInfo::Logs::Test::Rspec::FilePresenter < ::RailsInfo::Presenter
       attributes = []
       
       [:failure_code, :exception_class].each do |attribute|
+        next if @content[attribute].strip.blank?
+        
         attributes << (content_tag(:strong, "#{attribute.to_s.humanize}: ") + h(@content[attribute]))
       end
       
