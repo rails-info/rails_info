@@ -1,5 +1,13 @@
 ## rails_info (unreleased) ##
 
+*   Handles an unexpected case about method expectations failures at rspec log parser.
+
+   *Mathias Gawlista* 
+
+*   Sets up RSpec with 1 example.
+
+    *Mathias Gawlista*
+
 ## rails_info 0.0.2 (July 4, 2012)
 
 *   Improves backward compatibility for Rails 3.1.
