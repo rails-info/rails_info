@@ -1,4 +1,4 @@
-= RailsInfo
+= RailsInfo {<img src="https://secure.travis-ci.org/Applicat/rails_info.png" />}[http://travis-ci.org/Applicat/rails_info] {<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/Applicat/rails_info]
 
 Wiki[https://github.com/applicat/rails_info/wiki] 
 
