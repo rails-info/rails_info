@@ -49,7 +49,7 @@ class RailsInfo::Logs::Test::Rspec
         failures_found = true
         
         next
-      elsif line.match(/Finished in/) && @body[line_index + 1].match(/examples|failures|pending/)
+      elsif line.match(/Finished in/) && @body[line_index + 1].match(/example|failure|pending/)
         add_entry(example, failure_code, exception_class, exception_message, stack_trace, after_stack_trace_entry)
         
         @summary = @body[line_index + 1]
@@ -73,14 +73,21 @@ class RailsInfo::Logs::Test::Rspec
         #oMethodError:
         exception_class = @body[line_index + 2].split(':').first.strip
         
-        if exception_class == 'expected' || @body[line_index + 3].split(':').first.strip == 'expected'
+        if exception_class.match(/^expected/) || @body[line_index + 3].split(':').first.strip.match(/^expected/)
           #Reaction it should behave like objects that are 'hidable'#text_or_reason_for_hiding should return a notice if the entry has been hidden
           #Failure/Error: subject.content_or_reason_for_hiding.should == "Dieser Beitrag wurde am 2000-01-01 21:15:01 +0100 von Johann Wolfgang von Goethe gelöscht. Der Grund war: This entry sucks!"
           #expected: "Dieser Beitrag wurde am 2000-01-01 21:15:01 +0100 von Johann Wolfgang von Goethe gelöscht. Der Grund war: This entry sucks!"
           #got: "Dieser Beitrag wurde am 2000-01-01 20:15:01 +0000 von Johann Wolfgang von Goethe gelöscht. Der Grund war: This entry sucks!" (using ==)
           #Shared Example Group: "objects that are 'hidable'" called from ./spec/models/shared/hidable_trait_spec.rb:113
           ## ./spec/models/shared/hidable_trait_spec.rb:102:in `block (3 levels) in <top (required)>'
-          exception_class, exception_message, after_stack_trace_entry = alternative_exception_message(line_index, 2..4)
+          span = if @body[line_index + 3].match(/^got:/) || @body[line_index + 3].split(':').first.strip.match(/^expected/)
+            # TODO: write a spec for this case @body[line_index + 3].split(':').first.strip.match(/^expected/)
+            2..4
+          else
+            2..2
+          end
+          
+          exception_class, exception_message, after_stack_trace_entry = alternative_exception_message(line_index, span)
         else
           #undefined method `moderators' for nil:NilClass
           exception_message = @body[line_index + 3]
@@ -136,7 +143,7 @@ class RailsInfo::Logs::Test::Rspec
   end
   
   def alternative_exception_message(line_index, span)
-    exception_class = '', after_stack_trace_entry = nil
+    exception_class, after_stack_trace_entry = '', nil
     
     exception_message = span.to_a.map {|i| @body[line_index + i] }
           
