@@ -1,5 +1,7 @@
 ## rails_info (unreleased) ##
 
+## rails_info 0.0.3 (July 5, 2012)
+
 *   Wraps routes table by an jquery accordion presenter grouped by the first namespace part of the route path.
 
     *Mathias Gawlista*
