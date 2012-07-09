@@ -26,7 +26,11 @@ class RailsInfo::Logs::Test::Rspec
   end
   
   def hash
-    @log
+    @log.keys.any? ? @log : (@body || [''])
+  end
+  
+  def number_of_files 
+    hash.is_a?(Hash) ? hash.keys.length : 0
   end
   
   def rails_root
@@ -97,6 +101,9 @@ class RailsInfo::Logs::Test::Rspec
         stack_trace << line
       end
     end
+    
+    # free memory if log could be read otherwise keep text in memory to show instead
+    @body = nil if @log.keys.any?
   end
   
   def add_entry(example, failure_code, exception_class, exception_message, stack_trace, after_stack_trace_entry = nil)
@@ -131,9 +138,10 @@ class RailsInfo::Logs::Test::Rspec
     end
     
     if @log[file_name].has_key?(example)
-      raise NotImplementedError.new(
-        "RSpec file #{file_name} not expected to have more than 1 example named #{example.inspect}"
-      )
+      # TODO: increment example tab count in this case
+      #raise NotImplementedError.new(
+      #  "RSpec file #{file_name} not expected to have more than 1 example named #{example.inspect}"
+      #)
     end
 
     @log[file_name][example] = {
