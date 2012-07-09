@@ -1,8 +1,3 @@
-<style type="text/css">
-.ui-widget {
-    font-size: xx-small;
-}
-</style>
 <% form_tag rails_info_server_log_path do %>
   <%= check_box_tag 'debug' %> debug? 
   <p>
@@ -15,5 +10,15 @@
     <%= submit_tag 'submit' %>
   </p>
 <% end %>
+<ul class="nav nav-tabs nav-stacked">
+  <li><a name="top" href="#">1 ) Actions</a></li>
+  <li><a href="#writes">2 ) Writes</a></li>
+</ul>
+<hr/>
+<h3><a href="#top">1 ) Actions</a></h3>
+<hr/>
 <%= raw @rails_info_log.accordion %>
+<hr/>
+<h3><a name="writes" href="#top">2 ) Writes</a></h3>
+<hr/>
 <%= raw @rails_info_log.write_tabs %>
