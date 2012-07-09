@@ -7,6 +7,7 @@ class RailsInfo::Logs::Server
     path = options[:log][:path] || "#{Rails.root}/log/"
     env = options[:log][:env] || Rails.env
     @body = options[:log][:body] 
+    @start_after_last_shutdown = options[:log][:start_after_last_shutdown] || true
     
     unless @body
       file_path = "#{path}#{env}.log"
@@ -31,114 +32,67 @@ class RailsInfo::Logs::Server
   private
   
   def process
-    @start_after_last_shutdown = true
-    @body = @body.split("\n").map(&:strip)
+    @body = @body.split("\n").map{|l| l.gsub(/\e/, '')}.map(&:strip)
 
     reset_log
+    group_by_action?
     
+    @body.each do |line|
+      process_line(line)
+      @last_action = @action
+    end
+
+    delete_empty_tabs
+    set_where_column_as_last_one_in_write_tab
+  end
+  
+  def reset_log
+    @log, @action_indexes, @route, @action, @format, @last_action = {}, {}, '', '', '', ''
+  end
+  
+  def group_by_action?
     group_by_action = false
 
     @body.each do |line|
-      if line.match('Processing') && line.match('#') && line.match(/\[/)  && line.match(/\]/)
-        # rails 2
-        group_by_action = true
-      elsif line.match('Started') && line.match(' for ') && line.match(' at ') && line.split(' ').length == 9
+      if line.match('Processing by') && line.match('#') && line.match(' as ') && line.split(' ').length == 5
         # rails 3
-        group_by_action = true
-      elsif line.match('Processing by') && line.match('#') && line.match(' as ') && line.split(' ').length == 5
-        # rails 3
-        group_by_action = true
+        group_by_action = true      
+      #elsif line.match('Processing') && line.match('#') && line.match(/\[/)  && line.match(/\]/)
+      # rails 2
+      #  group_by_action = true
+      #elsif line.match('Started') && line.match(' for ') && line.match(' at ') && line.split(' ').length == 9
+      # rails 3
+      #  group_by_action = true
+        break
       end
     end
 
     unless group_by_action
       @action = 'no_action_grouping'
-      @log[@action] ||= { 'Parameters' => '', 'WRITE' => {}, 'READ' => [], 'views' => [], 'misc' => [], 'errors' => []}
-    end
-    
-    @body.each do |line|
-      process_line(line)
-    end
-
-    @log.each do |action,tabs|
-      tabs.each do |tab,content|
-        @log[action].delete(tab) if @log[action][tab].blank?
-      end
-    end
-
-    @log.each do |action,tabs|
-      tabs.each do |tab,content|
-        next unless tab == 'WRITE'
-
-        # define WHERE column as last one
-        content.each do |table_name,data|
-          @log[action][tab][table_name]['columns'] << 'WHERE'
-        end
-
-        break
-      end
-    end
-
-    @writes.each do |table_name,data|
-      @writes[table_name]['columns'] << 'WHERE'
+      @log[@action] ||= { 'Request' => {}, 'WRITE' => {}, 'READ' => [], 'views' => [], 'misc' => [], 'errors' => []}
     end
   end
   
-  def reset_log
-    @log, @action_indexes, @action, @last_action = {}, {}, "", ""
-  end
-
   # TODO: process test.log which don't have action grouping, too
   # TODO: look if newrelic & Co. already does that but are only doing it for the last action
   # TODO: parse stack traces by grouping the lines by file and than method, generate a pseudo web sequence diagram code for files as participants and their methods
   # TODO: integrate a code snippet for each line of the stack trace like brakeman & co. do
   # TODO: extend rails stack trace output by code snippets
   def process_line(line)
-    if line.match('Ctrl-C to shutdown server') && @start_after_last_shutdown
-      reset_log
-    elsif line.match('Processing') && line.match('#') && line.match(/\[/)  && line.match(/\]/)
-      # rails 2 start of action
-      # Processing Clickworker::DashboardsController#show (for 127.0.0.1 at 2011-08-26 12:22:58) [GET]
-      @action = line.split(' ')[1]
-
-      init_log_action
-    #elsif line.match('Started') && line.match(' for ') && line.match(' at ') && line.split(' ').length == 9
-      # rails 3 start of action
-      # Started GET "/orders/815?truncate_length=1000" for 127.0.0.1 at 2011-10-04 19:58:44 +0200
-    elsif line.match('Processing by') && line.match('#') && line.match(' as ') && line.split(' ').length == 5
-      # rails 3 start of action
-      # Processing by OrdersController#show as HTML
-      @action = line.split(' ')[2]
-      
-      init_log_action
-    elsif @action.blank?
-    elsif line.match('Parameters:') && line.match('{') && line.match('}')
-      line = line.split(' ')
-      line.pop
-      @log[@action]['Parameters'] = line.join(' ').strip
-    elsif line.match('INSERT INTO') || line.match('UPDATE')
-      table_name = table_name_from_line(line)
-      
-      data = line.match('INSERT INTO') ? process_insert(line) : process_update(table_name, line)
-      
-      # TaskTemplate Create (0.2ms)   INSERT INTO `task_templates` (`slug`, `name`, `created_at`, `product_id`, `updated_at`, `customer_id`, `state`) VALUES('the code', 'a customer name', '2011-08-26 10:22:54', 2, '2011-08-26 10:22:54', 1002, 'draft')
-      #
-      # InputDataItem Update (0.3ms)   UPDATE `data_items` SET `input` = '<opt>\n <input>\n <__dynamic_form__>\n <df_create>\n <the_input></the_input>\n <the_output>Output field 1</the_output>\n </df_create>\n </__dynamic_form__>\n </input>\n</opt>\n', `updated_at` = '2011-08-26 10:22:55' WHERE `id` = 5485
-      
-
-      @log[@action]['WRITE'][table_name] ||= { 'columns' => ['id'], 'rows' => [] }
-      @writes[table_name] ||= { 'columns' => ['id'], 'rows' => [] }
-      
-      @log[@action]['WRITE'][table_name]['columns'] = @log[@action]['WRITE'][table_name]['columns'].concat(data.keys).uniq
-      @writes[table_name]['columns'] = @writes[table_name]['columns'].concat(data.keys).uniq
-      @log[@action]['WRITE'][table_name]['rows'] << data
-      @writes[table_name]['rows'] << data
-    elsif (line.match('Load') && line.match('SELECT')) || (line.match('CACHE') && line.match('\(') && line.match('ms\)'))
-      line = line.split(')')
-      line.shift
-      @log[@action]['READ'] ||= []
-      @log[@action]['READ'] << line.join(')').strip
-    elsif line.match('Rendered') && line.match('\(') && line.match('ms\)')
+    return if line.blank?
+    
+    reset_log and return if line.match('Ctrl-C to shutdown server') && @start_after_last_shutdown
+    
+    parse_route(line) and return
+    parse_action(line) and return
+    
+    return if @action.blank?
+    
+    parse_request(line) and return
+    parse_read(line) and return
+    parse_write(line) and return
+    
+    if line.match('Rendered') && line.match('\(') && line.match('ms\)')
       @log[@action]['Views'] ||= []
       line = line.split('Rendered')
       line.shift
@@ -154,21 +108,123 @@ class RailsInfo::Logs::Server
     else
       @log[@action]['misc'] << line
     end
-
-    @last_action = @action
   end
   
-  def table_name_from_line(line)
-    line = line.split(')')
-    line.shift
-    line = line.join(')')
+  def delete_empty_tabs
+    @log.each do |action,tabs|
+      tabs.each do |tab,content|
+        @log[action].delete(tab) if @log[action][tab].blank?
+      end
+    end
+  end
+  
+  def set_where_column_as_last_one_in_write_tab
+    @log.select{|a,t| t['WRITE'].is_a?(Hash) }.each do |action,tabs|
+      tabs['WRITE'].each do |table_name,data|
+        @log[action]['WRITE'][table_name]['columns'] << 'WHERE'
+      end
+    end
+    
+    @writes.each {|table_name,data| @writes[table_name]['columns'] << 'WHERE' }
+  end
+  
+  def parse_route(line)
+    reg_exp = /^Started(.{1,})for/
+    
+    return false unless line.match(reg_exp)
+    
+    @route = line.match(reg_exp)[1].strip
+    
+    true
+  end
+  
+  def parse_action(line)
+    reg_exp = /^Processing by {1}(.{1,}) {1}as {1}(.{1,})$/
+    
+    return false unless line.match(reg_exp)
+    
+    @action = line.match(reg_exp)[1].strip
+    @format = line.match(reg_exp)[2].strip
+    
+    init_log_action unless @action.blank?
+    
+    true
+  end
+  
+  def parse_request(line)
+    reg_exp = /^Parameters:( ){1}(\{(.)+\}$)/
+    
+    if line.match(reg_exp)
+      @log[@action]['Request']['Parameters'] = eval(line.match(reg_exp)[2]) rescue line
+      
+      true
+    else
+      false
+    end
+  end
+  
+  def parse_read(line)
+    reg_exp_begin = '\[([0-9]+)m( {2}|)(SELECT.+)'
+    
+    #[1m[36mCommunity Load (0.5ms)[0m  [1mSELECT `communities`.* FROM `communities` WHERE `communities`.`id` = 2 LIMIT 1[0m   
+    reg_exp1 = "#{reg_exp_begin}(\\[)"
+    
+    #[1m[35mCACHE (0.0ms)[0m  SELECT `communities`.* FROM `communities` WHERE `communities`.`deleted` = 0 AND `communities`.`slug` = 'bronze' LIMIT 1
+    reg_exp2 = "#{reg_exp_begin}$"
+    
+    reg_exp = if line.match(reg_exp1)
+      reg_exp1
+    elsif line.match(reg_exp2)
+      reg_exp2
+    else
+      nil
+    end
+    
+    return false unless reg_exp
+    
+    @log[@action]['READ'] ||= [] 
+    @log[@action]['READ'] << line.match(reg_exp)[3].strip
+    
+    true
+  end
+  
+  def parse_write(line)
+    reg_exp = /([0-9]+)m( ){2}((INSERT INTO|UPDATE|DELETE FROM)(.)+)$/
+    
+    return false unless line.match(reg_exp)
+    
+    table_name = line.match(/(INSERT INTO|UPDATE|DELETE FROM) {1}`([a-zA-Z0-9_]+)`/)[2]
+    
+    data = {}
+    
+    if line.match(/([0-9]+)m( ){2}INSERT INTO( ){1}`(.{1,})`( ){1}(.)+$/)
+      data = process_insert(line)
+    elsif line.match(/([0-9]+)m( ){2}UPDATE( ){1}`(.{1,})`( ){1}(.)+$/)
+      data = process_update(table_name, line)
+    elsif line.match(/([0-9]+)m( ){2}DELETE FROM( ){1}`(.{1,})`( ){1}(.)+$/)
+      data = process_delete(table_name, line)
+    else
+      raise NotImplementedError
+    end
+    
+    # TaskTemplate Create (0.2ms)   INSERT INTO `task_templates` (`slug`, `name`, `created_at`, `product_id`, `updated_at`, `customer_id`, `state`) VALUES('the code', 'a customer name', '2011-08-26 10:22:54', 2, '2011-08-26 10:22:54', 1002, 'draft')
+    #
+    # InputDataItem Update (0.3ms)   UPDATE `data_items` SET `input` = '<opt>\n <input>\n <__dynamic_form__>\n <df_create>\n <the_input></the_input>\n <the_output>Output field 1</the_output>\n </df_create>\n </__dynamic_form__>\n </input>\n</opt>\n', `updated_at` = '2011-08-26 10:22:55' WHERE `id` = 5485
+    
 
-    line = line.split('`')
-    line[1]
+    @log[@action]['WRITE'][table_name] ||= { 'columns' => ['-action-', 'id'], 'rows' => [] }
+    @writes[table_name] ||= { 'columns' => ['-action-', 'id'], 'rows' => [] }
+    
+    @log[@action]['WRITE'][table_name]['columns'] = @log[@action]['WRITE'][table_name]['columns'].concat(data.keys).uniq
+    @writes[table_name]['columns'] = @writes[table_name]['columns'].concat(data.keys).uniq
+    @log[@action]['WRITE'][table_name]['rows'] << data
+    @writes[table_name]['rows'] << data
+    
+    true
   end
   
   def process_insert(line)
-    data = {}
+    data = {'-action-' => 'INSERT'}
     
     columns = line.match(/\(`(.)+\)(( |)VALUES)/)[0].split('VALUES').first.strip.gsub('`', '')[1..-2].split(',').map(&:strip)
 
@@ -191,18 +247,17 @@ class RailsInfo::Logs::Server
   end
   
   def process_update(table_name, line)
-    data = {}
+    data = {'-action-' => 'UPDATE'}
     
-    # SET `input` = '<opt>\n <input>\n <__dynamic_form__>\n <df_create>\n <the_input></the_input>\n <the_output>Output field 1</the_output>\n </df_create>\n </__dynamic_form__>\n </input>\n</opt>\n', `updated_at` = '2011-08-26 10:22:55' WHERE `id` = 5485
-    line = line.split('WHERE')
-    data_string = line.first
-    conditions = line.last
-    data_string = data_string.split(' '); data_string.shift; data_string = data_string.join(' ')
-    data_string = data_string.gsub("', `", "||||").gsub(", `", '||||').gsub("` = '", "=").split('||||')
-
+    #  "`editable` = 0, `updated_at` = '2012-07-09 16:33:31'"
+    data_string = line.match(/SET (.+) WHERE/)[1].strip
+    conditions = line.match(/WHERE(.+)$/)[1].strip
+    
+    data_string = data_string.gsub(/(', `|, `)/, "||||").gsub(/(` = '|` = )/, "=").gsub(/(`|')/, '').split('||||')
+    
     data_string.each do |data_element|
       data_element = data_element.split('=')
-      data[data_element.shift.gsub('`', '').strip] = data_element.join('=')
+      data[data_element.shift.strip] = data_element.join('=')
     end
 
     if conditions.match("`#{table_name}`.`id` = ([0-9]+)")
@@ -216,6 +271,23 @@ class RailsInfo::Logs::Server
     data
   end
     
+  def process_delete(table_name, line)
+    data = {'-action-' => 'DELETE'}
+    
+    # ... WHERE `id` = 5485
+    conditions = line.split('WHERE').last
+
+    if conditions.match("`#{table_name}`.`id` = ([0-9]+)")
+      data['id'] = conditions.match("`#{table_name}`.`id` = ([0-9]+)")[0].split('=').last.strip
+    elsif conditions.match(/`id` = ([0-9]+)/)
+      data['id'] = conditions.match(/`id` = ([0-9]+)/)[0].split('=').last.strip
+    end
+
+    data['WHERE'] = conditions
+    
+    data
+  end  
+    
   def init_log_action
     if @action_indexes.has_key?(@action)
       @action_indexes[@action] = @action_indexes[@action] + 1
@@ -225,6 +297,6 @@ class RailsInfo::Logs::Server
 
     @action = "#{@action} ##{@action_indexes[@action]}"
 
-    @log[@action] ||= { 'Parameters' => '', 'WRITE' => {}, 'READ' => [], 'views' => [], 'misc' => [], 'errors' => []}
+    @log[@action] ||= { 'Request' => {'Route' => @route, 'Format' => @format}, 'WRITE' => {}, 'READ' => [], 'views' => [], 'misc' => [], 'errors' => []}
   end
 end
