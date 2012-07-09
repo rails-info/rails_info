@@ -3,6 +3,10 @@ unless defined? Rails
     def self.root
       File.expand_path('dummy', __FILE__)
     end
+    
+    def self.env
+      'test'
+    end
   end
 end
 
