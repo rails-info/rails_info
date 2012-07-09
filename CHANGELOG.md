@@ -1,5 +1,23 @@
 ## rails_info (unreleased) ##
 
+## rails_info 0.0.4 (July 9, 2012)
+
+*   Pay some technical debts back with initial server log spec ;-)
+
+    *Mathias Gawlista*
+
+*   Render request presentation through special partial instead of plain text on server log page.
+
+    *Mathias Gawlista*
+
+*   Improvement of write and read tabs of server log presentation.
+
+    *Mathias Gawlista*
+
+*   Adds a toc nav for server log page and fixes rendering of write comparison tabs at the botoom.
+
+    *Mathias Gawlista*
+
 ## rails_info 0.0.3 (July 5, 2012)
 
 *   Wraps routes table by an jquery accordion presenter grouped by the first namespace part of the route path.
