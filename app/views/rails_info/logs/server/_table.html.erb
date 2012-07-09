@@ -1,7 +1,9 @@
 <div style="max-height:400px; width:100%; overflow: auto">
-  <table>
+  <table class="table table-striped">
     <thead>
-      <th><%= raw sub_content['columns'].uniq.join('</th><th>') %></th>
+      <tr>
+        <th><%= raw sub_content['columns'].uniq.join('</th><th>') %></th>
+      </tr>
     </thead>
     <tbody>
       <% sub_content['rows'].each do |row| %>
