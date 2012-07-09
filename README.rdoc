@@ -6,11 +6,6 @@ Experimental engine for a rails application besides admin and continous integrat
 
 It should be the place for other rake commands besides "rake routes" such as brakeman or best practices.
 
-Prepare for sporadic Ruby segmentation faults caused by the Python powered syntax highlighter pygments in the early stages of this project (at least under Ruby 1.9.3 & Rails 3.2.6 on MacOS). 
-There will be a configuration option for deactivating syntax highlighting soon for the time being without a solution for this problem.
-
-Tested on MacOS with: Rails 3.1 & Ruby 1.9.2, Rails 3.2.6 & Ruby 1.9.3.
-
 http://img207.imageshack.us/img207/8505/railsinfonavigation001.png
 
 == Installation
@@ -26,6 +21,13 @@ OPTIONAL: users of catch-all-routes like match '*not_found' => 'errors#404' have
 == Wiki Docs
 
 * {Modules}[https://github.com/Applicat/rails_info/wiki/modules]
+
+== Caveats
+
+Prepare for sporadic Ruby segmentation faults caused by the Python powered syntax highlighter pygments in the early stages of this project (at least under Ruby 1.9.3 & Rails 3.2.6 on MacOS). 
+There will be a configuration option for deactivating syntax highlighting soon for the time being without a solution for this problem.
+
+Tested on MacOS with: Rails 3.1 & Ruby 1.9.2, Rails 3.2.6 & Ruby 1.9.3.
 
 == Contribution
 
