@@ -7,7 +7,7 @@ class RailsInfo::Logs::ServerPresenter < ::RailsInfo::Presenter
   
   def accordion
     @action_index = 0
-    
+
     content_tag :div, id: 'actions', class: 'accordions' do
       html = ''
       
@@ -25,8 +25,7 @@ class RailsInfo::Logs::ServerPresenter < ::RailsInfo::Presenter
   
   def write_tabs
     content_tag :div, class: 'tabs', id: 'writes' do
-      write_navigation
-      write_body
+      raw(write_navigation) + raw(write_body)
     end
   end
   
@@ -34,24 +33,31 @@ class RailsInfo::Logs::ServerPresenter < ::RailsInfo::Presenter
     tab_index = 0
     
     content_tag :ul do
+      elements = ''
+      
       @rails_info_log.writes.each do |table_name,data|
-        li = content_tag :li, link_to(table_name, "writes-#{tab_index}")
+        elements += content_tag :li, link_to(table_name, "#writes-#{tab_index}")
         
         tab_index += 1
-        
-        li
       end
+      
+      raw elements
     end
   end
   
   def write_body
     tab_index = 0
     
+    html = ''
+    
     @rails_info_log.writes.each do |table_name,data|
-      content_tag :div, class: 'tabs', id: "writes-#{tab_index}" do
-        tab_index += 1
-        render partial: 'table', locals: { sub_content: data }
+      html += content_tag :div, id: "writes-#{tab_index}" do
+        raw render partial: 'rails_info/logs/server/table', locals: { sub_content: data }
       end
+      
+      tab_index += 1
     end
+    
+    html
   end
 end
