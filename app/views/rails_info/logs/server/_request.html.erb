@@ -1,0 +1,18 @@
+<div>
+  <div>
+    <strong>Route:</strong> <%= content['Route']%> | 
+    <strong>Format:</strong> <%= content['Format']%>
+  </div>
+<% if content['Parameters'].present? %>
+  <hr/>
+  <fieldset>
+    <legend><strong>Parameters</strong>
+    <div>
+      <%= render partial: 'rails_info/logs/server/table', locals: { 
+          sub_content: { 'columns' => content['Parameters'].keys, 'rows' => [content['Parameters']] } 
+        }
+      %>
+    </div>
+  </fieldset>
+<% end %>
+</div>
