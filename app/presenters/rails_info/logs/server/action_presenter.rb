@@ -13,7 +13,7 @@ class RailsInfo::Logs::Server::ActionPresenter < ::RailsInfo::Presenter
     html += content_tag(:div, class: 'tabs', id: "tabs-#{@index}") do
       raw(navigation) + raw(body) 
     end
-    
+
     html
   end
   
@@ -24,7 +24,7 @@ class RailsInfo::Logs::Server::ActionPresenter < ::RailsInfo::Presenter
       @tab_index = 0
       
       elements = ''
-      
+
       @tabs_data.keys.select{|tab_key| tab_key.present?}.each do |tab_key| 
         elements += content_tag :li, link_to(tab_key, "#tabs-#{@index}-#{@tab_index}")
         @tab_index += 1
@@ -46,9 +46,17 @@ class RailsInfo::Logs::Server::ActionPresenter < ::RailsInfo::Presenter
   
   def tab(tab_key)
     @content = @tabs_data[tab_key]
-      
+    
     content_tag :div, class: 'tabs', id: "tabs-#{@index}-#{@tab_index}" do
-      raw @content.is_a?(Hash) ? sub_tabs : sub_content_tab
+      html = if tab_key == 'Request'
+        raw render partial: 'rails_info/logs/server/request', locals: { content: @content }
+      else
+        raw @content.is_a?(Hash) ? sub_tabs : sub_content_tab
+      end
+      
+      @tab_index += 1
+      
+      html
     end
   end
   
@@ -65,12 +73,11 @@ class RailsInfo::Logs::Server::ActionPresenter < ::RailsInfo::Presenter
   def sub_content_tab
     content_tag :div, style: 'max-height:400px; width:100%; overflow: auto' do
       if @content.is_a?(Array) 
-        @content.map!{|c| CGI.escapeHTML(c) }.join('<br/><br/>')
+        @content.map!{|c| CGI.escapeHTML(c) }
+        @content = @content.join('<br/><br/>')
       else
         @content = CGI.escapeHTML(@content) 
       end
-      
-      @tab_index += 1
  
       raw @content
     end
@@ -99,7 +106,7 @@ class RailsInfo::Logs::Server::ActionPresenter < ::RailsInfo::Presenter
       
       html += content_tag :div, class: 'tabs', id: "tabs-#{@index}-#{@tab_index}-#{sub_tab_index}" do
         sub_tab_index += 1
-        @tab_index += 1
+        
         raw render partial: 'rails_info/logs/server/table', locals: { sub_content: sub_content }
       end
     end
