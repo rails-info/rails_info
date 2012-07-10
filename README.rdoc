@@ -1,6 +1,4 @@
-= RailsInfo {<img src="https://secure.travis-ci.org/Applicat/rails_info.png" />}[http://travis-ci.org/Applicat/rails_info] {<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/Applicat/rails_info]
-
-Wiki[https://github.com/applicat/rails_info/wiki] 
+= RailsInfo Wiki[https://github.com/applicat/rails_info/wiki] {<img src="https://secure.travis-ci.org/Applicat/rails_info.png" />}[http://travis-ci.org/Applicat/rails_info] {<img src="https://codeclimate.com/badge.png" />}[https://codeclimate.com/github/Applicat/rails_info]
 
 Experimental engine for a rails application besides admin and continous integration web interface which extends standard /rails/info (properties through public.html iframe and on Rails 3 Edge / Rails 4 also the routes action) about some extra information resources in development environment.
 
