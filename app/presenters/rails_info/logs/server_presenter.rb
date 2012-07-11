@@ -11,7 +11,8 @@ class RailsInfo::Logs::ServerPresenter < ::RailsInfo::Presenter
     content_tag :div, id: 'actions', class: 'accordions' do
       html = ''
       
-      @rails_info_log.hash.each do |action, tabs|
+      @rails_info_log.hash.keys.reverse.each do |action|
+        tabs = @rails_info_log.hash[action]
         action_presenter = ::RailsInfo::Logs::Server::ActionPresenter.new(
           @subject, name: action, tabs_data: tabs, index: @action_index
         )
@@ -57,6 +58,9 @@ class RailsInfo::Logs::ServerPresenter < ::RailsInfo::Presenter
       
       tab_index += 1
     end
+    
+    # free memory
+    @rails_info_log = nil
     
     html
   end
