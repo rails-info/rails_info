@@ -1,10 +1,37 @@
-<%= form_tag rails_info_rspec_log_path, method: 'put' do %>
-  <p>
-  <%= check_box_tag 'debug' %> debug? &nbsp;&nbsp;  
-  <%= label_tag 'log[rails_root]', raw('<strong>Rails root:</strong>') %> 
-  <%= text_field_tag 'log[rails_root]', (params['log']['rails_root'] rescue "#{Rails.root}/"), size: 75 %> &nbsp;&nbsp;  
-  <%= submit_tag 'submit' %>
-  </p>
-<% end %>
-<%= raw @rails_info_log.summary %>
-<%= raw @rails_info_log.accordion %>
+<div class="tabs">
+  <ul>
+    <li><a href="#output">Output</a></li>
+    <li><a href="#reload_from_file">Reload from file</a></li>
+    <li><a href="#reload_from_text">Reload from text</a></li>
+  </ul>
+  <div id="output">
+    <%= raw @rails_info_log.summary %>
+    <%= raw @rails_info_log.accordion %>
+  </div>
+  <div id>
+  <div id="reload_from_file">
+    <%= form_tag rails_info_rspec_log_path, method: 'put' do %>
+      <p> 
+        <%= label_tag 'log[rails_root]', raw('<strong>Rails root:</strong>') %> 
+        <%= text_field_tag 'log[rails_root]', (params['log']['rails_root'] rescue "#{Rails.root}/"), class: 'auto_width', size: 75 %> &nbsp;&nbsp;  
+      </p>
+      <p>
+        <%= submit_tag 'submit' %>
+      </p>
+    <% end %>
+  </div>
+  <div id="reload_from_text">
+    <%= form_tag rails_info_rspec_log_path, method: 'put' do %>
+      <p> 
+        <%= label_tag 'log[rails_root]', raw('<strong>Rails root:</strong>') %> 
+        <%= text_field_tag 'log[rails_root]', (params['log']['rails_root'] rescue "#{Rails.root}/"), class: 'auto_width', size: 75 %> &nbsp;&nbsp;  
+      </p>
+      <p>
+        <%= text_area_tag 'log[body]', (params['log']['body'] rescue nil), class: 'auto_width', cols: 150, rows: 15 %>
+      </p>
+      <p>
+        <%= submit_tag 'submit' %>
+      </p>
+    <% end %>
+  </div>
+</div>
