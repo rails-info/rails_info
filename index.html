@@ -28,42 +28,66 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h1>RailsInfo</h1>
+          <div class="announce instapaper_body rdoc" data-path="/" id="readme"><span class="name"><span class="mini-icon mini-icon-readme"></span> README.rdoc</span><article class="markdown-body entry-content" itemprop="mainContentOfPage">
+<h1>
+<a name="railsinfo-wiki---" class="anchor" href="#railsinfo-wiki---"><span class="mini-icon mini-icon-link"></span></a>RailsInfo <a href="https://github.com/applicat/rails_info/wiki">Wiki</a> <a href="http://travis-ci.org/Applicat/rails_info"><img src="https://secure.travis-ci.org/Applicat/rails_info.png" style="max-width:100%;"></a> <a href="https://codeclimate.com/github/Applicat/rails_info"><img src="https://codeclimate.com/badge.png" style="max-width:100%;"></a> <a href="https://gemnasium.com/Applicat/rails_info"><img src="https://gemnasium.com/Applicat/rails_info.png?travis" style="max-width:100%;"></a>
+</h1>
 
-<p><a href="https://github.com/applicat/rails_info/wiki">Wiki</a> </p>
+<p>Experimental engine for a rails application besides admin and continous
+integration web interface which extends standard /rails/info (properties
+through public.html iframe and on Rails 3 Edge / Rails 4 also the routes
+action) about some extra information resources in development environment.</p>
 
-<p><img src="http://img207.imageshack.us/img207/8505/railsinfonavigation001.png" alt="rails_info navigation version 0.0.1"></p>
+<p><a href="https://a248.e.akamai.net/camo.github.com/f4b196efad1faec1acfbd3b2d475af0ad934fc31/687474703a2f2f696d673230372e696d616765736861636b2e75732f696d673230372f383530352f7261696c73696e666f6e617669676174696f6e3030312e706e67" target="_blank"><img src="https://a248.e.akamai.net/camo.github.com/f4b196efad1faec1acfbd3b2d475af0ad934fc31/687474703a2f2f696d673230372e696d616765736861636b2e75732f696d673230372f383530352f7261696c73696e666f6e617669676174696f6e3030312e706e67" style="max-width:100%;"></a></p>
 
-<p>Experimental engine for a rails application besides admin and continous integration web interface which extends standard /rails/info (properties through public.html iframe and on Rails 3 Edge / Rails 4 also the routes action) about some extra information resources in development environment.</p>
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="mini-icon mini-icon-link"></span></a>Installation</h2>
 
-<p>It should be the place for other rake commands besides "rake routes" such as brakeman or best practices.</p>
+<p>In <b>Rails 3</b>, add this under your development group to the Gemfile of
+your Rails 3 application and run the <tt>bundle</tt> command.</p>
 
-<p>Prepare for sporadic Ruby segmentation faults caused by the Python powered syntax highlighter pygments in the early stages of this project (at least under Ruby 1.9.3 &amp; Rails 3.2.6 on MacOS). 
-There will be a configuration option for deactivating syntax highlighting soon for the time being without a solution for this problem.</p>
+<pre>gem "rails_info"</pre>
 
-<p>Tested on MacOS with: Rails 3.1 &amp; Ruby 1.9.2, Rails 3.2.6 &amp; Ruby 1.9.3.</p>
+<p>OPTIONAL: users of catch-all-routes like match ‘*not_found’ =&gt;
+‘errors#404’ have to add the following line before this
+catch-all-route:</p>
 
-<h1>Installation</h1>
+<pre>mount_rails_info if Rails.env.development?</pre>
 
-<p>In <b>Rails 3</b>, add this under your development group to the Gemfile of your Rails 3 application and run the +bundle+ command.</p>
+<h2>
+<a name="wiki-docs" class="anchor" href="#wiki-docs"><span class="mini-icon mini-icon-link"></span></a>Wiki Docs</h2>
+<ul><li>
+<p><a href="https://github.com/Applicat/rails_info/wiki/modules">Modules</a></p>
+</li></ul><h2>
+<a name="caveats" class="anchor" href="#caveats"><span class="mini-icon mini-icon-link"></span></a>Caveats</h2>
 
-<p>gem "rails_info"</p>
+<p>Prepare for sporadic Ruby segmentation faults caused by the Python powered
+syntax highlighter pygments in the early stages of this project (at least
+under Ruby 1.9.3 &amp; Rails 3.2.6 on MacOS).  There will be a
+configuration option for deactivating syntax highlighting soon for the time
+being without a solution for this problem.</p>
 
-<p>OPTIONAL: users of catch-all-routes like match '*not_found' =&gt; 'errors#404' have to add the following line before this catch-all-route:</p>
+<p>Tested on MacOS with: Rails 3.1 &amp; Ruby 1.9.2, Rails 3.2.6 &amp; Ruby
+1.9.3.</p>
 
-<p>mount_rails_info if Rails.env.development?</p>
+<h1>
+<a name="future" class="anchor" href="#future"><span class="mini-icon mini-icon-link"></span></a>Future</h1>
 
-<h1>Wiki Docs</h1>
+<p>It should be the place for other rake commands besides “rake routes”
+such as brakeman or best practices.</p>
 
-<ul>
-<li><a href="https://github.com/Applicat/rails_info/wiki/modules">Modules</a></li>
-</ul><h1>Contribution</h1>
+<h2>
+<a name="contribution" class="anchor" href="#contribution"><span class="mini-icon mini-icon-link"></span></a>Contribution</h2>
 
-<p>Just follow the screencast of Ryan Bates on railscasts.com: </p>
+<p>Just follow the screencast of Ryan Bates on railscasts.com:</p>
 
-<p><a href="http://railscasts.com/episodes/300-contributing-to-open-source">http://railscasts.com/episodes/300-contributing-to-open-source</a></p>
+<pre>http://railscasts.com/episodes/300-contributing-to-open-source</pre>
 
-<h1>License</h1>
+<p>Add a description about your changes to CHANGELOG.md under section
+rails_info (unreleased).</p>
+
+<h2>
+<a name="license-" class="anchor" href="#license-"><span class="mini-icon mini-icon-link"></span></a>License </h2>
 
 <p>This project uses MIT-LICENSE.</p>
         </section>
