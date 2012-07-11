@@ -1,5 +1,25 @@
 ## rails_info (unreleased) ##
 
+## rails_info 0.0.5 (July 10, 2012)
+
+*   logs/server: improves parsing of SQL write queries to not suppress this much entries in the Write table.
+
+*   logs/server: Hide rails/info requests.
+
+*   logs/server: Fixes server log form.
+
+    *Mathias Gawlista*
+
+*   logs/server: reverse presentation of server log.
+
+    *Mathias Gawlista*
+
+*   logs/server, logs/test/rspec: wrap page by 3 tabs pane.
+
+    *Mathias Gawlista*
+
+*   logs/server: free memory efforts
+
 ## rails_info 0.0.4 (July 9, 2012)
 
 *   Pay some technical debts back with initial server log spec ;-)
