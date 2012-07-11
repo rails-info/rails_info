@@ -1,24 +1,42 @@
-<% form_tag rails_info_server_log_path do %>
-  <%= check_box_tag 'debug' %> debug? 
-  <p>
-    <%= text_field_tag 'log[rails_root]', (params['log']['rails_root'] rescue "#{Rails.root}/log/") %>
-  </p>
-  <p>
-    <%= text_area_tag 'log[body]', (params['log']['body'] rescue nil) %>
-  </p>
-  <p>
-    <%= submit_tag 'submit' %>
-  </p>
-<% end %>
-<ul class="nav nav-tabs nav-stacked">
-  <li><a name="top" href="#">1 ) Actions</a></li>
-  <li><a href="#writes">2 ) Writes</a></li>
-</ul>
-<hr/>
-<h3><a href="#top">1 ) Actions</a></h3>
-<hr/>
-<%= raw @rails_info_log.accordion %>
-<hr/>
-<h3><a name="writes" href="#top">2 ) Writes</a></h3>
-<hr/>
-<%= raw @rails_info_log.write_tabs %>
+<div class="tabs">
+  <ul>
+    <li><a href="#output">Output</a></li>
+    <li><a href="#reload_from_file">Reload from file</a></li>
+    <li><a href="#reload_from_text">Reload from text</a></li>
+  </ul>
+  <div id="output">
+    <ul class="nav nav-tabs nav-stacked">
+      <li><a name="top" href="#">1 ) Actions</a></li>
+      <li><a href="#writes">2 ) Writes</a></li>
+    </ul>
+    <hr/>
+    <h3><a href="#top">1 ) Actions</a></h3>
+    <hr/>
+    <%= raw @rails_info_log.accordion %>
+    <hr/>
+    <h3><a name="writes" href="#top">2 ) Writes</a></h3>
+    <hr/>
+    <%= raw @rails_info_log.write_tabs %>
+  </div>
+  <div id="reload_from_file">
+    <%= form_tag rails_info_server_log_path, method: 'put' do %>
+      <p>
+        <%= label_tag 'log[rails_root]', raw('<strong>Rails root:</strong>') %> 
+        <%= text_field_tag 'log[rails_root]', (params['log']['rails_root'] rescue Rails.root.to_s), class: 'auto_width', size: 75 %> 
+      </p>
+      <p>
+        <%= submit_tag 'submit' %>
+      </p>
+    <% end %>
+  </div>
+  <div id="reload_from_text">
+    <%= form_tag rails_info_server_log_path, method: 'put' do %>
+      <p>
+        <%= text_area_tag 'log[body]', (params['log']['body'] rescue nil), cols: 50 %>
+      </p>
+      <p>
+        <%= submit_tag 'submit' %>
+      </p>
+    <% end %>
+  </div>
+</div>  
