@@ -4,13 +4,13 @@ class RailsInfo::Logs::Server
     options[:log] ||= {}
     
     @debug = options[:debug]
-    path = options[:log][:path] || "#{Rails.root}/log/"
+    rails_root = options[:log][:rails_root] || Rails.root.to_s
     env = options[:log][:env] || Rails.env
     @body = options[:log][:body] 
     @start_after_last_shutdown = options[:log][:start_after_last_shutdown] || true
     
-    unless @body
-      file_path = "#{path}#{env}.log"
+    if @body.blank?
+      file_path = "#{rails_root}/log/#{env}.log"
       
       @body = File.new(file_path, 'r').read if File.exist?(file_path)
     end
@@ -44,6 +44,8 @@ class RailsInfo::Logs::Server
 
     delete_empty_tabs
     set_where_column_as_last_one_in_write_tab
+    
+    @body = nil # free memory
   end
   
   def reset_log
@@ -84,6 +86,9 @@ class RailsInfo::Logs::Server
     reset_log and return if line.match('Ctrl-C to shutdown server') && @start_after_last_shutdown
     
     parse_route(line) and return
+    
+    return if @route.match(/"\/rails\/info.+"/)      
+    
     parse_action(line) and return
     
     return if @action.blank?
@@ -189,19 +194,20 @@ class RailsInfo::Logs::Server
   end
   
   def parse_write(line)
-    reg_exp = /([0-9]+)m( ){2}((INSERT INTO|UPDATE|DELETE FROM)(.)+)$/
+    begin_reg_exp = "\\[[0-9]+m *"
+    reg_exp = "#{begin_reg_exp}((INSERT INTO|UPDATE|DELETE FROM)(.)+)$"
     
     return false unless line.match(reg_exp)
     
-    table_name = line.match(/(INSERT INTO|UPDATE|DELETE FROM) {1}`([a-zA-Z0-9_]+)`/)[2]
+    table_name = line.match("(INSERT INTO|UPDATE|DELETE FROM) {1}`([a-zA-Z0-9_]+)`")[2]
     
     data = {}
     
-    if line.match(/([0-9]+)m( ){2}INSERT INTO( ){1}`(.{1,})`( ){1}(.)+$/)
+    if line.match("#{begin_reg_exp}INSERT INTO( ){1}`(.{1,})`( ){1}(.)+$")
       data = process_insert(line)
-    elsif line.match(/([0-9]+)m( ){2}UPDATE( ){1}`(.{1,})`( ){1}(.)+$/)
+    elsif line.match("#{begin_reg_exp}UPDATE( ){1}`(.{1,})`( ){1}(.)+$")
       data = process_update(table_name, line)
-    elsif line.match(/([0-9]+)m( ){2}DELETE FROM( ){1}`(.{1,})`( ){1}(.)+$/)
+    elsif line.match("#{begin_reg_exp}DELETE FROM( ){1}`(.{1,})`( ){1}(.)+$")
       data = process_delete(table_name, line)
     else
       raise NotImplementedError
