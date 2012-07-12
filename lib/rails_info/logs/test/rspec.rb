@@ -1,5 +1,5 @@
 class RailsInfo::Logs::Test::Rspec
-  FILE_NAME_REGEXP = /[a-zA-Z]|[0-9]|\/|\.|_|-/
+  FILE_NAME_REGEXP = /[a-zA-Z]|[0-9]|\/|\.|_|-|@/
   
   def initialize(options = {log: {}, debug: false})
     options ||= {log: {}, debug: false}
@@ -96,7 +96,7 @@ class RailsInfo::Logs::Test::Rspec
           #undefined method `moderators' for nil:NilClass
           exception_message = @body[line_index + 3]
         end
-      elsif failures_found && line.match("^#( ){1}\.\/(#{FILE_NAME_REGEXP}){1,}:[0-9]{1,}:in( ){1}`((.){1,})'")  
+      elsif failures_found && line.match("^#( ){1}(\.|)\/(#{FILE_NAME_REGEXP}){1,}:[0-9]{1,}:in( ){1}`((.){1,})'")  
         ## ./app/models/notification/email.rb:38:in `block in receivers'
         stack_trace << line
       end
@@ -113,7 +113,7 @@ class RailsInfo::Logs::Test::Rspec
     
     # from spec line of code down to application line of code
     stack_trace.reverse!
-    file_name = stack_trace.first.match("^#( ){1}(\.\/(#{FILE_NAME_REGEXP}){1,})")[2]
+    file_name = stack_trace.first.match("^#( ){1}((\.|)\/(#{FILE_NAME_REGEXP}){1,})")[2]
     
     @log[file_name] ||= {}
     

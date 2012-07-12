@@ -1,6 +1,10 @@
 ## rails_info (unreleased) ##
 
-## rails_info 0.0.5 (July 10, 2012)
+## rails_info 0.0.6 (July 12, 2012) ##
+
+*   logs/test/rspec: allow parsing of absolute file paths in stack traces of rspec log files
+
+## rails_info 0.0.5 (July 10, 2012) ##
 
 *   logs/server: improves parsing of SQL write queries to not suppress this much entries in the Write table.
 
@@ -20,7 +24,7 @@
 
 *   logs/server: free memory efforts
 
-## rails_info 0.0.4 (July 9, 2012)
+## rails_info 0.0.4 (July 9, 2012) ##
 
 *   Pay some technical debts back with initial server log spec ;-)
 
@@ -38,7 +42,7 @@
 
     *Mathias Gawlista*
 
-## rails_info 0.0.3 (July 5, 2012)
+## rails_info 0.0.3 (July 5, 2012) ##
 
 *   Wraps routes table by an jquery accordion presenter grouped by the first namespace part of the route path.
 
@@ -52,7 +56,7 @@
 
     *Mathias Gawlista*
 
-## rails_info 0.0.2 (July 4, 2012)
+## rails_info 0.0.2 (July 4, 2012) ##
 
 *   Improves backward compatibility for Rails 3.1.
 
@@ -60,7 +64,7 @@
 
     *Mathias Gawlista*
 
-## rails_info 0.0.1 (July 3, 2012)
+## rails_info 0.0.1 (July 3, 2012) ##
 
 *   initial version
 
