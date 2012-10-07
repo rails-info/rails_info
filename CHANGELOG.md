@@ -1,5 +1,9 @@
 ## rails_info (unreleased) ##
 
+## rails_info 0.0.7 (October 7, 2012) ##
+
+*   solves a conflict with simple_navigation in the application including the gem
+
 ## rails_info 0.0.6 (July 12, 2012) ##
 
 *   logs/test/rspec: allow parsing of absolute file paths in stack traces of rspec log files

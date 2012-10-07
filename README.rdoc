@@ -14,6 +14,10 @@ OPTIONAL: users of catch-all-routes like match '*not_found' => 'errors#404' have
 
   mount_rails_info if Rails.env.development?
 
+OPTIONAL: If you are also using the simple_navigation gem then you need to make sure that you navigation configuration file is not called navigation.rb.
+
+  If you have a navigation.rb file rename it to main_navigation.rb and add the context: :main option to the render_navigation calls in your views.
+
 == Wiki Docs
 
 * {Modules}[https://github.com/Applicat/rails_info/wiki/modules]
