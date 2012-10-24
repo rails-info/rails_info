@@ -1,6 +1,6 @@
 ## rails_info (unreleased) ##
 
-*   
+*  stack_trace: Divides the stack trace presentation into two tabs application and full.  
 
 ## rails_info 0.0.7 (October 7, 2012) ##
 
