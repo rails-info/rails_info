@@ -24,13 +24,26 @@ class RailsInfo::StackTracePresenter < ::RailsInfo::Presenter
     html
   end
   
-  def accordion
+  # Parameters
+  #
+  # type: full or application
+  def accordion(type = 'full')
     content_tag :div, class: 'accordions' do
       html = ''
       
-      @stack_trace.hash.each do |file, code|
+      hash = if type == 'application' 
+        if @stack_trace.hash.keys.first.match(' of ') 
+          @stack_trace.hash.select{|f,c| f.match("of #{rails_root}")}
+        else
+          @stack_trace.hash.select{|f,c| f.match(rails_root)}
+        end
+      else 
+        @stack_trace.hash
+      end
+           
+      hash.each do |file, code|
         file_without_rails_root = file.dup
-        
+       
         if file_without_rails_root.match(rails_root)
           file_without_rails_root.gsub!(rails_root, '') 
         end

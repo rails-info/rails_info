@@ -5,6 +5,6 @@
   <% if @stack_trace.request && @stack_trace.response %>
     <%= render 'rails_info/stack_traces/with_request_and_response' %>
   <% else %>
-    <%= render 'rails_info/stack_traces/accordion' %>
+    <%= raw @stack_trace.accordion %>
   <% end %>  
 <% end %>

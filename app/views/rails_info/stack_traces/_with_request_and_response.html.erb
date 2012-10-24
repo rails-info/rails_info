@@ -5,7 +5,17 @@
     <li><a href="#response">Response</a></li>
   </ul>
   <div id="stack_trace">
-    <%= render 'rails_info/stack_traces/accordion' %>
+    <div class="tabs">
+      <ul>
+        <li><a href="#application_stack_trace">Application</a></li>
+        <li><a href="#full_stack_trace">Full (Application + Framework)</a></li>
+      </ul>
+      <div id="application_stack_trace">
+        <%= raw @stack_trace.accordion('application') %>
+      </div>
+      <div id="full_stack_trace">
+        <%= raw @stack_trace.accordion %>
+      </div>
   </div>
   <div id="request">
     <%= raw @stack_trace.request_tab %>
