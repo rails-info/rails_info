@@ -1,23 +1,39 @@
 ## rails_info (unreleased) ##
 
+## rails_info 0.0.9 (October 26, 2012) ##
+
+*  Makes navigation work in test environment, too.
+
+   *Mathias Gawlista*
+   
 ## rails_info 0.0.8 (October 25, 2012) ##
 
 *  stack_trace: Divides the stack trace presentation into two tabs application and full.  
+
+   *Mathias Gawlista*
 
 ## rails_info 0.0.7 (October 7, 2012) ##
 
 *   solves a conflict with simple_navigation in the application on including the gem
 
+    *Mathias Gawlista*
+
 ## rails_info 0.0.6 (July 12, 2012) ##
 
 *   logs/test/rspec: allow parsing of absolute file paths in stack traces of rspec log files
+
+    *Mathias Gawlista*
 
 ## rails_info 0.0.5 (July 10, 2012) ##
 
 *   logs/server: improves parsing of SQL write queries to not suppress this much entries in the Write table.
 
+    *Mathias Gawlista*
+
 *   logs/server: Hide rails/info requests.
 
+    *Mathias Gawlista*
+    
 *   logs/server: Fixes server log form.
 
     *Mathias Gawlista*
@@ -31,7 +47,9 @@
     *Mathias Gawlista*
 
 *   logs/server: free memory efforts
-
+ 
+    *Mathias Gawlista*
+    
 ## rails_info 0.0.4 (July 9, 2012) ##
 
 *   Pay some technical debts back with initial server log spec ;-)
