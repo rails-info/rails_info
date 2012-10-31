@@ -1,5 +1,11 @@
 ## rails_info (unreleased) ##
 
+## rails_info 0.1.0 (October 31, 2012) ##
+
+*  Make use of rails_info's exception presenter only in development.
+
+   *Mathias Gawlista*
+
 ## rails_info 0.0.9 (October 26, 2012) ##
 
 *  Makes navigation work in test environment, too.
