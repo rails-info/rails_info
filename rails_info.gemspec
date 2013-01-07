@@ -28,6 +28,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'pygments.rb'
   s.add_dependency 'twitter-bootstrap-rails'
   s.add_dependency 'simple-navigation-bootstrap'
+  s.add_dependency 'therubyracer'
+  s.add_dependency 'less-rails'
   
   s.add_development_dependency("awesome_print")
   s.add_development_dependency("rspec-rails")
