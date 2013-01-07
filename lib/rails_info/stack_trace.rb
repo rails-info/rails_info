@@ -77,11 +77,24 @@ class RailsInfo::StackTrace
   
   # TODO: add additionally tab with a diff of separate rails_root / gemset when those parameters have been passed
   def parse_stack_trace_line(line_string)
-    method = line_string.match(/in `((.)+)'/)[1]
+    line = {}
     
-    line_string.gsub!(method, '')
-    line = line_string.split(':')
-    line = {file: line.first.strip, number: line.second.strip.to_i}
+    if line_string.match(/in `((.)+)'/)
+      method = line_string.match(/in `((.)+)'/)[1]
+      
+      line_string.gsub!(method, '')
+      line = line_string.split(':')
+      line = {file: line.first.strip, number: line.second.strip.to_i}
+    elsif line_string.match(/at(.+|) \(((.)+)\)/)
+      # at less.Parser.parser.parse.i (/Users/gawlim/.rvm/gems/ruby-1.9.3-p327@mtvnn-sensei_shadow/gems/less-2.2.2/lib/less/js/lib/less/parser.js:385:31)
+      # at (/Users/gawlim/.rvm/gems/ruby-1.9.3-p327@mtvnn-sensei_shadow/gems/less-2.2.2/lib/less/js/lib/less/parser.js:385:31)
+      method = line_string.match(/at(.+|) \(((.)+)\)/)[1]
+      line = line_string.match(/at(.+|) \(((.)+)\)/)[2].split(':')
+      
+      line = {file: line.first.strip, number: line.second.strip.to_i}
+    else
+      raise NotImplementedError  
+    end
     
     code = {}
     
