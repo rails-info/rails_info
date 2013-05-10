@@ -1,9 +1,11 @@
 # view
 require 'jquery-rails'
 require 'jquery-ui-rails'
-require 'pygments'
-require 'twitter-bootstrap-rails'
+require 'coffee_script'
+require 'sass-rails'
+require 'bootstrap-sass'
 require 'simple-navigation-bootstrap'
+require 'pygments'
 
 require 'rails_info/engine'
 require 'rails_info/routing'
