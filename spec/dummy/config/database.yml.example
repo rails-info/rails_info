@@ -12,7 +12,7 @@ development:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: dummy_development
+  database: rails_info_development
   pool: 5
   username: root
   password:
@@ -25,7 +25,7 @@ test:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: dummy_test
+  database: rails_info_test
   pool: 5
   username: root
   password:
@@ -35,7 +35,7 @@ production:
   adapter: mysql2
   encoding: utf8
   reconnect: false
-  database: dummy_production
+  database: rails_info_production
   pool: 5
   username: root
   password:
