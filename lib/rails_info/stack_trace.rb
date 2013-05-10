@@ -92,8 +92,13 @@ class RailsInfo::StackTrace
       line = line_string.match(/at(.+|) \(((.)+)\)/)[2].split(':')
       
       line = {file: line.first.strip, number: line.second.strip.to_i}
+    elsif line_string.match(/^\/.+:[0-9]+$/)
+      # sass exceptions
+      # /Users/gawlim/workspace/gem_repos/engines/rails_info/app/assets/stylesheets/rails_info/bootstrap_and_overrides.css.sass:17
+      line = line_string.split(':')
+      line = { file: line.first.strip, number: line.last.strip.to_i }
     else
-      raise NotImplementedError  
+      raise NotImplementedError.new(line_string.inspect)  
     end
     
     code = {}
