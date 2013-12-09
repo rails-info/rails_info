@@ -16,11 +16,25 @@ module ActionDispatch::Routing
       match '/rails/info/logs/server' => 'rails_info/logs/server#new', via: :get, as: 'new_rails_info_server_log'
       put '/rails/info/logs/server' => 'rails_info/logs/server#update', via: :put, as: 'rails_info_server_log'
       
+      get '/rails/info/logs/server/big' => 'rails_info/logs/server#big'
+      
       match '/rails/info/logs/test/rspec' => 'rails_info/logs/test/rspec#new', via: :get, as: 'new_rails_info_rspec_log'
       put '/rails/info/logs/test/rspec' => 'rails_info/logs/test/rspec#update', via: :put, as: 'rails_info_rspec_log'
       
       match '/rails/info/stack_traces/new' => 'rails_info/stack_traces#new', via: :get, as: 'new_rails_info_stack_trace'
       post '/rails/info/stack_traces' => 'rails_info/stack_traces#create', via: :post, as: 'rails_info_stack_trace'
+      
+      namespace 'rails_info', path: 'rails/info' do
+        namespace 'system' do
+          resources :directories, only: :index
+        end
+        
+        namespace 'version_control' do
+          resources :filters, only: [:new, :create]
+          
+          resources :diffs, only: :new
+        end
+      end
     end
   end
 end

@@ -22,3 +22,4 @@ spec/dummy/log/*.log
 spec/dummy/tmp/
 spec/dummy/.sass-cache
 spec/dummy/config/database.yml
+spec/dummy/rack-insight.sqlite

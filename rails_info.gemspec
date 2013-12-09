@@ -18,17 +18,21 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 3.0'
   
+  s.add_dependency 'grit'
+  
   # assets
   s.add_dependency 'coffee-script'
   s.add_dependency 'uglifier'
   
   # view
-  s.add_dependency 'jquery-rails'
-  s.add_dependency 'jquery-ui-rails'
-  s.add_dependency 'pygments.rb'
   s.add_dependency 'sass-rails', '~> 3.2'
   s.add_dependency 'bootstrap-sass', '~> 2.3.1.0'
+  s.add_dependency 'mustache'
   s.add_dependency 'simple-navigation-bootstrap'
+  s.add_dependency 'jquery-rails'
+  s.add_dependency 'jquery-ui-rails'
+  s.add_dependency 'diff_to_html'
+  s.add_dependency 'pygments.rb'
   s.add_dependency 'therubyracer'
   
   s.add_development_dependency("awesome_print")

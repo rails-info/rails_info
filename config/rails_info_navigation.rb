@@ -10,6 +10,10 @@ SimpleNavigation::Configuration.run do |navigation|
       model.item :data, 'Data', rails_info_data_path
     end
     
+    primary.item :version_control, 'Version Control' do |version_control|
+      version_control.item :filter, 'Filter', new_rails_info_version_control_filter_path
+    end
+    
     primary.item :logs, 'Logs', '#logs' do |logs|
       logs.item :server, 'Server', new_rails_info_server_log_path
       logs.item :rspec, 'Test > RSpec', new_rails_info_rspec_log_path

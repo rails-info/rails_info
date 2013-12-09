@@ -1,0 +1,31 @@
+<% content_for(:styles) do %>
+  <%= stylesheet_link_tag 'rails_info/version_control/filter' %>
+  <%= stylesheet_link_tag 'rails_info/version_control/diff' %>
+<% end %>
+<% content_for(:scripts) { javascript_include_tag 'rails_info/version_control/filters/new' } %>
+<div class="row-fluid">
+  <div class="span4">  
+    <%= render 'form' %>
+  </div>
+  <div class="span8">
+    <% if @filter.valid? && @filter.last_revision.blank? %>
+      <div class="alert">
+        <strong>Nothing found.</strong>
+      </div>
+    <% elsif @filter.valid? %>
+      <p>
+        <strong>Commits</strong> <%= @filter.commits_count %> <strong>Files</strong> <%= @filter.files_count %>
+      </p>
+      <p>
+        <% if @filter.last_revision.blank? || @filter.previous_revision.blank? %>
+          Diff from last revision to previous revision (Not implemented yet)
+        <% else %>
+          <a href="https://projects.mtvnn.com/projects/<%= @filter.project_slug %>/repository/revisions/<%= @filter.branch %>/diff?rev=<%=@filter.last_revision %>&rev_to=<%= @filter.previous_revision %>">
+            Diff from last revision to previous revision (currently includes commits not matching the current filter)
+          </a>
+        <% end %>
+      </p>
+      <%= render 'categories' %>
+    <% end %>
+  </div>
+</div>

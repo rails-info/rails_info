@@ -1,0 +1,53 @@
+<%= form_tag rails_info_version_control_filters_path, method: 'post', class: 'form-horizontal', id: 'version_control_filter' do %>
+  <% unless action_name == 'new' || @filter.valid? %>
+     <div class="alert">
+       <strong>Filter is invalid</strong> 
+       <ul>
+         <% @filter.errors.each do |field, error| %>
+           <li><%= field.humanize %>: <%=error %></li>
+         <% end %>
+       </ul>
+     </div>
+  <% end %>
+  <div class="tabs">
+    <ul>
+      <li><a href="#version_control_filter_basic">Basic</a></li>
+      <li><a href="#version_control_filter_time_span">Time Span</a></li>
+      <li><a href="#version_control_filter_commit">Commit</a></li>
+    </ul>
+    <div id="version_control_filter_basic">
+      <fieldset>
+        <%= rails_info_field('workspace', placeholder: 'e.g. /users/user_name/workspace', size: 45) %>
+        <%= rails_info_field('repository', placeholder: 'e.g. mtvnn-sensei', size: 45) %>
+        <%= rails_info_field('project_slug', placeholder: 'projects.mtvnn.com/projects/:project_slug', size: 45) %>
+        <%= rails_info_field('branch', placeholder: 'e.g. master', size: 45) %>
+        <%= rails_info_field('path', size: 45) %>
+        <%= rails_info_field('author') do |name| %>
+          <%= select_tag "filter[#{name}]", options_for_select([''] + @filter.users, @filter.send(name)) %>
+        <% end %>
+      </fieldset>
+    </div>
+    <div id="version_control_filter_time_span">
+      <fieldset>
+        <%= rails_info_field('from', class: 'datepicker', size: 45) %>
+        <%= rails_info_field('to', class: 'datepicker', size: 45) %>
+      </fieldset>
+    </div>
+    <div id="version_control_filter_commit">
+      <fieldset>
+        <%= rails_info_field('id', size: 45) %>
+        <%= rails_info_field('message', size: 45) %>
+        <%= rails_info_field('story', size: 45) %>
+        <%= rails_info_field('tasks', size: 45) %>
+        <%= rails_info_field('filter_merges', hint: 'Message matches "^Merge branch "') do |name, controls| %>
+          <%= radio_button_tag "filter[#{name}]", "1", @filter.send(name) ? true : false %> Yes
+          <%= radio_button_tag "filter[#{name}]", "0", @filter.send(name) ? false : true  %> No
+          <%= raw controls %>
+        <% end %>
+      </fieldset>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Filter</button>
+  </div>
+<% end %>

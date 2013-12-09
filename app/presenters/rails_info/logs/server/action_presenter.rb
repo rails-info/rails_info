@@ -47,7 +47,7 @@ class RailsInfo::Logs::Server::ActionPresenter < ::RailsInfo::Presenter
   def tab(tab_key)
     @content = @tabs_data[tab_key]
     
-    content_tag :div, class: 'tabs', id: "tabs-#{@index}-#{@tab_index}" do
+    content_tag :div, id: "tabs-#{@index}-#{@tab_index}" do
       html = if tab_key == 'Request'
         raw render partial: 'rails_info/logs/server/request', locals: { content: @content }
       else

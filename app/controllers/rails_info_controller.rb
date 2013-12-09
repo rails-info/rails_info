@@ -1,7 +1,6 @@
 class RailsInfoController < Rails::InfoController
-  include ::RailsInfo::Controller::ExceptionDiagnostics
-  
   before_filter :check_if_all_requests_local
+  helper RailsInfo::Engine.helpers
   
   #TODO: should inherit from ApplicationController especially for authentification & authorization purposes
   layout 'rails_info'

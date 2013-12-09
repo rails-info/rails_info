@@ -1,3 +1,7 @@
+#require 'rack/bug'
+#require 'rack/bug/panels/mustache_panel'
+require 'rack/insight'
+
 Dummy::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
@@ -29,4 +33,8 @@ Dummy::Application.configure do
   config.assets.debug = true
   
   config.assets.logger = nil
+  
+  #config.middleware.use 'Rack::Bug', secret_key: 'someverylongandveryhardtoguesspreferablyrandomstring'
+  #config.middleware.use 'Rack::Bug::MustachePanel'
+  config.middleware.use 'Rack::Insight::App', secret_key: 'someverylongandveryhardtoguesspreferablyrandomstring'
 end

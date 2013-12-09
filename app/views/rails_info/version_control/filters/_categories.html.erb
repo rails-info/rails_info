@@ -1,0 +1,30 @@
+
+<div class="bootstrap_accordion">
+  <% display = 'block' %>
+  <% @filter.files_by_category.each do |category, setting| %>
+    <% paths = setting[:files].keys.sort %>
+    <div>
+      <h3><a href="#"><%= category.to_s.humanize %> (<%= setting[:files].keys.length %> Files)</a></h3>
+      <div class="tabs">
+        <p>Diff from last revision to previous revision (TODO)</p>
+        <ul>
+          <% paths.each do |path| %>
+            <% commits = setting[:files][path] %>
+            <li>
+              <% matching_part = setting[:paths].select{|part| path.match(part) }.first %>
+              <a href="#<%= version_control_path_id(path) %>">
+                <%= matching_part ? path.gsub(matching_part, '') : path %>
+              </a>
+            </li>
+          <% end %>
+        </ul>
+        <% paths.each do |path| %>
+          <div id="<%=version_control_path_id(path)%>">
+            <%= render 'file_commits', commits: setting[:files][path], path: path %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <% display = 'none' %>
+  <% end %>
+</div>
