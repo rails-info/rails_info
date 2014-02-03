@@ -1,5 +1,11 @@
 ## rails_info (unreleased) ##
 
+## rails_info 0.1.1 (February 3, 2014) ##
+
+*  Adds version control menu.
+
+   *Mathias Gawlista*
+
 ## rails_info 0.1.0 (October 31, 2012) ##
 
 *  Make use of rails_info's exception presenter only in development.

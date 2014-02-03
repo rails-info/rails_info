@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails_info (0.1.0)
+    rails_info (0.1.1)
       bootstrap-sass (~> 2.3.1.0)
       coffee-script
       diff_to_html (~> 0.0.1)
