@@ -27,16 +27,16 @@ Gem::Specification.new do |s|
   # view
   s.add_dependency 'sass-rails', '~> 3.2'
   s.add_dependency 'bootstrap-sass', '~> 2.3.1.0'
-  s.add_dependency 'mustache'
-  s.add_dependency 'simple-navigation-bootstrap'
-  s.add_dependency 'jquery-rails'
-  s.add_dependency 'jquery-ui-rails'
-  s.add_dependency 'diff_to_html'
-  s.add_dependency 'pygments.rb'
-  s.add_dependency 'therubyracer'
+  s.add_dependency 'mustache', '~> 0.99.4'
+  s.add_dependency 'simple-navigation-bootstrap', '~> 0.0.4'
+  s.add_dependency 'jquery-rails', '~> 2.2.1'
+  s.add_dependency 'jquery-ui-rails', '~> 4.0.2'
+  s.add_dependency 'diff_to_html', '~> 0.0.1'
+  s.add_dependency 'pygments.rb', '~> 0.5.0'
+  s.add_dependency 'therubyracer', '~> 0.11.4'
   
-  s.add_development_dependency("awesome_print")
-  s.add_development_dependency("rspec-rails")
+  s.add_development_dependency 'awesome_print', '~> 1.1.0'
+  s.add_development_dependency 'rspec-rails', '~> 2.13.1'
   
-  s.add_development_dependency 'mysql2'
+  s.add_development_dependency 'mysql2', '~> 0.3.11'
 end
