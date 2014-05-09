@@ -6,8 +6,7 @@ class RailsInfo::StackTrace
     @lines_of_code_around = options[:lines_of_code_around] || 5
     @show_all = options[:show_all]
     
-    if stack_trace.is_a?(String) && stack_trace.match('#')
-      # parse RSpec style stack trace "# ./app/observers/assignment_observer.rb:65:in `after_save'"
+    if stack_trace.is_a?(String)
       line_separator = if stack_trace.match(/\r\n/) 
         "\r\n"
       elsif stack_trace.match(/\\n/)
@@ -16,9 +15,13 @@ class RailsInfo::StackTrace
         "\n"
       end
       
-      stack_trace = stack_trace.split(line_separator).map{|line|line.gsub('#', '').gsub('./', rails_root + '/')}.map(&:strip)
-    elsif stack_trace.is_a?(String) && !stack_trace.strip.blank?
-      raise NotImplementedError.new(stack_trace.inspect)
+      if stack_trace.match('#')
+        # parse RSpec style stack trace "# ./app/observers/assignment_observer.rb:65:in `after_save'"
+        stack_trace = stack_trace.split(line_separator).map{|line|line.gsub('#', '').gsub('./', rails_root + '/')}.map(&:strip)
+      elsif !stack_trace.strip.blank?
+        #raise NotImplementedError.new(stack_trace.inspect)
+        stack_trace = stack_trace.split(line_separator).map{|line|line.gsub('./', rails_root + '/')}.map(&:strip)
+      end
     end
     
     @stack_trace = stack_trace
@@ -80,6 +83,11 @@ class RailsInfo::StackTrace
     line = {}
     
     if line_string.match(/in `((.)+)'/)
+      if line_string.match(/^from .+$/)
+        # from /Users/gawlim/.rbenv/versions/2.1.1/lib/ruby/gems/2.1.0/gems/activerecord-4.1.1/lib/active_record/railtie.rb:110:in `block (3 levels) in <class:Railtie>'
+        line_string = line_string[5..line_string.length]  
+      end
+      
       method = line_string.match(/in `((.)+)'/)[1]
       
       line_string.gsub!(method, '')
@@ -106,7 +114,7 @@ class RailsInfo::StackTrace
     if File.exist? line[:file]
       code = code_with_line_numbers(line)
     else
-      code = { text: "File #{line[:file]} not found", line_numbers: [0]}
+      code = { text: "File #{line[:file].inspect} not found", line_numbers: [0]}
     end
     
     path = line[:file].split('/')
