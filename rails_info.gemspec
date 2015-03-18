@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '~> 4.2.0'
 
   s.add_development_dependency 'sqlite3', '~> 1.3.10'
-  s.add_development_dependency 'home_page', 'home_page', '~> 0.0.6'
+  s.add_development_dependency 'home_page', '~> 0.0.6'
 end
