@@ -2,8 +2,6 @@
 
 Experimental engine for a rails application besides admin and continous integration web interface which extends standard /rails/info (properties through public.html iframe and on Rails 3 Edge / Rails 4 also the routes action) about some extra information resources in development environment.
 
-http://img207.imageshack.us/img207/8505/railsinfonavigation001.png
-
 ## Installation
 
 ### Mount in existing Rails application or ...
